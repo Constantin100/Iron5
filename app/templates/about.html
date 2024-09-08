@@ -1,0 +1,10 @@
+<!-- app/templates/about.html -->
+{% extends 'base.html' %}
+
+{% block title %}Обо мне{% endblock %}
+
+{% block content %}
+<h2>Обо мне</h2>
+<p>Всем привет! Я Юра!</p>
+<img src="{{ url_for('static', filename='images/yura-photo.jpg') }}" alt="Юра">
+{% endblock %}

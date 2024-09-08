@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Кованые изделия{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="gothic-font">
+            <a href="{{ url_for('home') }}" class="logo-link">Schnaps Metall</a>
+        </h1>
+        <nav>
+            <a href="{{ url_for('home') }}" class="button">Главная</a>
+            <a href="{{ url_for('products') }}" class="button">Продукты</a>
+            <a href="{{ url_for('about') }}" class="button">Обо мне</a>
+            <a href="{{ url_for('contacts') }}" class="button">Контакты</a>
+        </nav>
+    </header>
+    
+    <div class="main-content">
+        <aside class="sidebar">
+            <h2 class="section-title">Категории</h2>
+            <ul>
+                <li><a href="#" class="category-button" onclick="loadProducts('Ножи')">Ножи</a></li>
+                <li><a href="#" class="category-button" onclick="loadProducts('Топоры')">Топоры</a></li>
+                <li><a href="#" class="category-button" onclick="loadProducts('Сувениры')">Сувениры</a></li>
+                <li><a href="#" class="category-button" onclick="loadProducts('Ковка в интерьер')">Ковка в интерьер</a></li>
+            </ul>
+        </aside>
+        
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <footer>
+        <p>Контакты: <a href="tel:+375333507070">+375 33 350 7070</a></p>
+        <p>Instagram: <a href="https://www.instagram.com/jury_blacksmith" target="_blank">@jury_blacksmith</a></p>
+    </footer>
+
+    <script>
+        function loadProducts(category) {
+            fetch(`/api/products?category=${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    const productList = document.getElementById('product-list');
+                    productList.innerHTML = '<ul></ul>'; // Очистить список перед добавлением новых товаров
+                    const ul = productList.querySelector('ul');
+                    data.forEach(product => {
+                        const li = document.createElement('li');
+                        li.textContent = product.name;
+                        ul.appendChild(li);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
