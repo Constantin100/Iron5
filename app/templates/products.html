@@ -1,4 +1,3 @@
-<!-- app/templates/products.html -->
 {% extends 'base.html' %}
 
 {% block title %}Продукты{% endblock %}
@@ -7,38 +6,40 @@
 <h2>Наши продукты</h2>
 <p>Здесь вы можете увидеть список наших продуктов.</p>
 
-<!-- Боковая панель с категориями -->
-<div id="sidebar">
-    <h3>Категории</h3>
-    <button onclick="loadProducts('Ножи')">Ножи</button>
-    <button onclick="loadProducts('Топоры')">Топоры</button>
-    <button onclick="loadProducts('Сувениры')">Сувениры</button>
-    <button onclick="loadProducts('Ковка в интерьер')">Ковка в интерьер</button>
-    <!-- Добавьте другие категории по необходимости -->
-</div>
-
 <!-- Список продуктов -->
 <div id="product-list">
-    <ul>
-        <li>Продукт 1</li>
-        <li>Продукт 2</li>
-        <li>Продукт 3</li>
+    <ul id="products">
+        <!-- Здесь будет динамически добавляться список продуктов -->
     </ul>
+    <p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
 </div>
 
 <script>
+    // Получаем категорию из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    if (category) {
+        loadProducts(category); // Загружаем продукты по категории
+    }
+
     function loadProducts(category) {
         fetch(`/api/products?category=${category}`)
             .then(response => response.json())
             .then(data => {
-                const productList = document.getElementById('product-list');
-                productList.innerHTML = '<ul></ul>'; // Очистить список перед добавлением новых товаров
-                const ul = productList.querySelector('ul');
-                data.forEach(product => {
-                    const li = document.createElement('li');
-                    li.textContent = product.name;
-                    ul.appendChild(li);
-                });
+                const productList = document.getElementById('products');
+                const noProductsMessage = document.getElementById('no-products-message');
+                productList.innerHTML = ''; // Очистить список
+
+                if (data.length > 0) {
+                    data.forEach(product => {
+                        const li = document.createElement('li');
+                        li.textContent = product.name; // Предполагается, что у продукта есть поле name
+                        productList.appendChild(li);
+                    });
+                    noProductsMessage.style.display = 'none'; // Скрыть сообщение
+                } else {
+                    noProductsMessage.style.display = 'block'; // Показать сообщение
+                }
             });
     }
 </script>

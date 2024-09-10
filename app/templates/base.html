@@ -24,15 +24,17 @@
         <aside class="sidebar">
             <h2 class="section-title">Категории</h2>
             <ul>
-                <li><a href="#" class="category-button" onclick="loadProducts('Ножи')">Ножи</a></li>
-                <li><a href="#" class="category-button" onclick="loadProducts('Топоры')">Топоры</a></li>
-                <li><a href="#" class="category-button" onclick="loadProducts('Сувениры')">Сувениры</a></li>
-                <li><a href="#" class="category-button" onclick="loadProducts('Ковка в интерьер')">Ковка в интерьер</a></li>
+                <!-- Измените ссылки на категории в sidebar -->
+                <li><a href="{{ url_for('products', category='Ножи') }}" class="category-button">Ножи</a></li>
+                <li><a href="{{ url_for('products', category='Топоры') }}" class="category-button">Топоры</a></li>
+                <li><a href="{{ url_for('products', category='Сувениры') }}" class="category-button">Сувениры</a></li>
+                <li><a href="{{ url_for('products', category='Ковка в интерьер') }}" class="category-button">Ковка в интерьер</a></li>
             </ul>
         </aside>
         
         <div class="content">
             {% block content %}{% endblock %}
+            <div id="message" style="display: none; color: red;"></div> <!-- Элемент для сообщения об отсутствии продуктов -->
         </div>
     </div>
 
@@ -47,13 +49,21 @@
                 .then(response => response.json())
                 .then(data => {
                     const productList = document.getElementById('product-list');
+                    const message = document.getElementById('message');
                     productList.innerHTML = '<ul></ul>'; // Очистить список перед добавлением новых товаров
+                    message.style.display = 'none'; // Скрыть сообщение об отсутствии продуктов
+
                     const ul = productList.querySelector('ul');
-                    data.forEach(product => {
-                        const li = document.createElement('li');
-                        li.textContent = product.name;
-                        ul.appendChild(li);
-                    });
+                    if (data.length === 0) {
+                        message.textContent = 'Продукты данной категории отсутствуют.';
+                        message.style.display = 'block'; // Показать сообщение
+                    } else {
+                        data.forEach(product => {
+                            const li = document.createElement('li');
+                            li.textContent = product.name;
+                            ul.appendChild(li);
+                        });
+                    }
                 });
         }
     </script>

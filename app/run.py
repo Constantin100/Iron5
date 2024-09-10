@@ -1,5 +1,4 @@
-# app/run.py
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -17,7 +16,35 @@ def contacts():
 
 @app.route('/products')
 def products():
-    return render_template('products.html')
+    category = request.args.get('category')
+    products = {
+        "Ножи": ["Нож 1", "Нож 2"],
+        "Топоры": [],
+        "Сувениры": ["Сувенир 1", "Сувенир 2"],
+        "Ковка в интерьер": ["Ковка 1", "Ковка 2"],
+    }
+    if category in products:
+        if not products[category]:  # Проверка на наличие товаров
+            return render_template('products.html', message="Товары на данный момент отсутствуют")
+        return render_template('products.html', products=products[category])
+    return render_template('products.html', error="Категория не найдена")
+
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    category = request.args.get('category')
+    print(f"Запрашиваемая категория: {category}")  # Отладочное сообщение
+    products = {
+        "Ножи": ["Нож 1", "Нож 2"],
+        "Топоры": [],
+        "Сувениры": ["Сувенир 1", "Сувенир 2"],
+        "Ковка в интерьер": ["Ковка 1", "Ковка 2"],
+    }
+    if category in products:
+        if not products[category]:  # Проверка на наличие товаров
+            return jsonify({"message": "Товары на данный момент отсутствуют"}), 200
+        print(f"Найденные продукты: {products[category]}")  # Отладочное сообщение
+        return jsonify({"products": products[category]})
+    return jsonify({"error": "Категория не найдена"}), 404
 
 @app.errorhandler(404)
 def not_found(error):
