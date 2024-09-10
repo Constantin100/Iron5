@@ -18,20 +18,26 @@
     // Получаем категорию из URL
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
+    console.log('Категория:', category); // Отладочное сообщение
     if (category) {
         loadProducts(category); // Загружаем продукты по категории
     }
 
     function loadProducts(category) {
+        console.log('Загрузка продуктов для категории:', category); // Отладочное сообщение
         fetch(`/api/products?category=${category}`)
-            .then(response => response.json())
+            .then(response => {
+                console.log('Ответ от API:', response); // Отладочное сообщение
+                return response.json();
+            })
             .then(data => {
+                console.log('Полученные данные:', data); // Отладочное сообщение
                 const productList = document.getElementById('products');
                 const noProductsMessage = document.getElementById('no-products-message');
                 productList.innerHTML = ''; // Очистить список
 
-                if (data.length > 0) {
-                    data.forEach(product => {
+                if (data.products && data.products.length > 0) {
+                    data.products.forEach(product => {
                         const li = document.createElement('li');
                         li.textContent = product.name; // Предполагается, что у продукта есть поле name
                         productList.appendChild(li);
@@ -40,6 +46,11 @@
                 } else {
                     noProductsMessage.style.display = 'block'; // Показать сообщение
                 }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки продуктов:', error);
+                const noProductsMessage = document.getElementById('no-products-message');
+                noProductsMessage.style.display = 'block'; // Показать сообщение в случае ошибки
             });
     }
 </script>

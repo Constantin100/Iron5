@@ -17,6 +17,9 @@
             <a href="{{ url_for('products') }}" class="button">Продукты</a>
             <a href="{{ url_for('about') }}" class="button">Обо мне</a>
             <a href="{{ url_for('contacts') }}" class="button">Контакты</a>
+            {% if 'logged_in' in session %}
+                <a href="{{ url_for('admin') }}" class="button">Админ</a>
+            {% endif %}
         </nav>
     </header>
     
@@ -24,7 +27,6 @@
         <aside class="sidebar">
             <h2 class="section-title">Категории</h2>
             <ul>
-                <!-- Измените ссылки на категории в sidebar -->
                 <li><a href="{{ url_for('products', category='Ножи') }}" class="category-button">Ножи</a></li>
                 <li><a href="{{ url_for('products', category='Топоры') }}" class="category-button">Топоры</a></li>
                 <li><a href="{{ url_for('products', category='Сувениры') }}" class="category-button">Сувениры</a></li>
@@ -34,7 +36,7 @@
         
         <div class="content">
             {% block content %}{% endblock %}
-            <div id="message" style="display: none; color: red;"></div> <!-- Элемент для сообщения об отсутствии продуктов -->
+            <div id="message" style="display: none; color: red;"></div>
         </div>
     </div>
 
@@ -50,13 +52,13 @@
                 .then(data => {
                     const productList = document.getElementById('product-list');
                     const message = document.getElementById('message');
-                    productList.innerHTML = '<ul></ul>'; // Очистить список перед добавлением новых товаров
-                    message.style.display = 'none'; // Скрыть сообщение об отсутствии продуктов
+                    productList.innerHTML = '<ul></ul>';
+                    message.style.display = 'none';
 
                     const ul = productList.querySelector('ul');
                     if (data.length === 0) {
                         message.textContent = 'Продукты данной категории отсутствуют.';
-                        message.style.display = 'block'; // Показать сообщение
+                        message.style.display = 'block';
                     } else {
                         data.forEach(product => {
                             const li = document.createElement('li');

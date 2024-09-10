@@ -25,12 +25,24 @@
                     <option value="">Выберите категорию</option>
                     <option value="Ножи">Ножи</option>
                     <option value="Топоры">Топоры</option>
-                    <option value="Другое">Другое</option>
+                    <option value="Сувениры">Сувениры</option>
+                    <option value="Ковка в интерьер">Ковка в интерьер</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="images">Изображения:</label>
                 <input type="file" id="images" name="images" multiple accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="active">Активен:</label>
+                <input type="checkbox" id="active" name="active">
+            </div>
+            <div class="form-group">
+                <label for="in_stock">Наличие:</label>
+                <select id="in_stock" name="in_stock" required>
+                    <option value="В наличии">В наличии</option>
+                    <option value="Под заказ">Под заказ</option>
+                </select>
             </div>
             <button type="submit" class="submit-btn">Добавить продукт</button>
         </form>

@@ -11,10 +11,11 @@ class User(db.Model):
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-    price = db.Column(db.Float, nullable=False)  # Добавлено поле для цены
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    name = db.Column(db.String(80), nullable=False)  # Изменено на 80 символов
+    description = db.Column(db.String(200), nullable=True)  # Изменено на 200 символов
+    price = db.Column(db.Float, nullable=False)
+    category = db.Column(db.String(50), nullable=False)  # Добавляем атрибут category
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())  # Изменено на db.func.current_timestamp()
     images = db.relationship('ProductImage', backref='product', lazy=True)
 
     def __repr__(self):

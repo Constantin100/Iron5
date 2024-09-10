@@ -14,7 +14,7 @@
         <h3>Список продуктов:</h3>
         <ul>
             {% for product in products %}
-                <li>{{ product.name }} ({{ product.category }})</li>
+                <li>{{ product.name }} ({{ product.category }}) - {% if product.active %}Активен{% else %}Неактивен{% endif %} - {{ product.in_stock }}</li>
             {% endfor %}
         </ul>
     </div>
