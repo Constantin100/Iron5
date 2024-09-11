@@ -5,11 +5,14 @@ from flask_login import login_required
 from datetime import datetime
 from flask_migrate import Migrate
 from models import db, Product
+import os
 
+
+basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Добавьте секретный ключ для сессий
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'  # Укажите путь к вашей базе данных
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'instance/product.db')  # Укажите путь к вашей базе данных
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
