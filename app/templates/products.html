@@ -2,6 +2,10 @@
 
 {% block title %}Продукты{% endblock %}
 
+{% block breadcrumb %}
+<a href="{{ url_for('home') }}">Главная</a> / Продукты
+{% endblock %}
+
 {% block content %}
 <h2>Наши продукты</h2>
 <p>Здесь вы можете увидеть список наших продуктов.</p>

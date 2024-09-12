@@ -13,12 +13,12 @@
             <a href="{{ url_for('home') }}" class="logo-link">Schnaps Metall</a>
         </h1>
         <nav>
-            <a href="{{ url_for('home') }}" class="button">Главная</a>
-            <a href="{{ url_for('products') }}" class="button">Продукты</a>
-            <a href="{{ url_for('about') }}" class="button">Обо мне</a>
-            <a href="{{ url_for('contacts') }}" class="button">Контакты</a>
+            <a href="{{ url_for('home') }}" class="button {% if request.endpoint == 'home' %}active{% endif %}">Главная</a>
+            <a href="{{ url_for('products') }}" class="button {% if request.endpoint == 'products' %}active{% endif %}">Продукты</a>
+            <a href="{{ url_for('about') }}" class="button {% if request.endpoint == 'about' %}active{% endif %}">Обо мне</a>
+            <a href="{{ url_for('contacts') }}" class="button {% if request.endpoint == 'contacts' %}active{% endif %}">Контакты</a>
             {% if 'logged_in' in session %}
-                <a href="{{ url_for('admin') }}" class="button">Админ</a>
+                <a href="{{ url_for('admin') }}" class="button {% if request.endpoint == 'admin' %}active{% endif %}">Админ</a>
             {% endif %}
         </nav>
     </header>
@@ -35,6 +35,9 @@
         </aside>
         
         <div class="content">
+            <nav class="breadcrumb">
+                {% block breadcrumb %}{% endblock %}
+            </nav>
             {% block content %}{% endblock %}
             <div id="message" style="display: none; color: red;"></div>
         </div>
