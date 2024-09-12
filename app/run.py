@@ -78,7 +78,6 @@ def products():
     return render_template('products.html', products=products)
 
 @app.route('/api/products', methods=['GET'])
-@app.route('/api/products', methods=['GET'])
 def get_products():
     category = request.args.get('category')
     print(f"Запрашиваемая категория: {category}")  # Отладочное сообщение
@@ -97,6 +96,7 @@ def get_products():
                 images.append(url_for('static', filename='images/no_image.jpg'))
         
         product_list.append({
+            "id": product.id,
             "name": product.name,
             "description": product.description,
             "price": product.price,
@@ -202,6 +202,11 @@ def delete_product(product_id):
     db.session.commit()
     flash('Продукт успешно удален')
     return redirect(url_for('admin'))
+
+@app.route('/product/<int:product_id>')
+def product_detail(product_id):
+    product = Product.query.get_or_404(product_id)
+    return render_template('product_detail.html', product=product)
 
 @app.errorhandler(404)
 def not_found(error):

@@ -11,7 +11,7 @@
     <ul id="products">
         {% for product in products %}
             <li>
-                <h3>{{ product.name }}</h3>
+                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
                 {% if product.images %}
                     <img src="{{ product.images[0] }}" alt="{{ product.name }}">
                 {% endif %}
@@ -50,9 +50,12 @@
 
                 if (data.products && data.products.length > 0) {
                     data.products.forEach(product => {
+                        console.log('Обработка продукта:', product); // Отладочное сообщение
                         const li = document.createElement('li');
+                        const productUrl = `/product/${product.id}`;
+                        console.log('URL продукта:', productUrl); // Отладочное сообщение
                         li.innerHTML = `
-                            <h3>${product.name}</h3>
+                            <h3><a href="${productUrl}">${product.name}</a></h3>
                             ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}">` : ''}
                             <p>${product.description}</p>
                             <p>Цена: ${product.price} руб.</p>

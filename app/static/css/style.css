@@ -336,3 +336,34 @@ footer * {
     padding: 0;
     color: #ff6b6b;
 }
+
+.product-detail-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    color: #fff;
+}
+
+.product-detail-container h2 {
+    margin-bottom: 20px;
+}
+
+.product-images img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #ffd700;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
