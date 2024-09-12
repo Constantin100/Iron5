@@ -19,12 +19,14 @@ class Product(db.Model):
     images = db.relationship('ProductImage', backref='product', lazy=True)
     active = db.Column(db.Boolean, default=True)
     in_stock = db.Column(db.String(50), nullable=False) 
+
     def __repr__(self):
         return f'<Product {self.name}>'
 
 class ProductImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(255), nullable=False)
+    data = db.Column(db.LargeBinary, nullable=True)  # Хранение изображения в виде бинарных данных
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
 
     def __repr__(self):

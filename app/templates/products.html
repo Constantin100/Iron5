@@ -10,7 +10,15 @@
 <div id="product-list">
     <ul id="products">
         {% for product in products %}
-            <li>{{ product.name }} - {{ product.price }} руб.</li>
+            <li>
+                <h3>{{ product.name }}</h3>
+                {% if product.images %}
+                    <img src="{{ product.images[0] }}" alt="{{ product.name }}">
+                {% endif %}
+                <p>{{ product.description }}</p>
+                <p>Цена: {{ product.price }} руб.</p>
+                <p>Наличие: {{ product.in_stock }}</p>
+            </li>
         {% endfor %}
     </ul>
     <p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
@@ -43,7 +51,13 @@
                 if (data.products && data.products.length > 0) {
                     data.products.forEach(product => {
                         const li = document.createElement('li');
-                        li.textContent = product.name; // Предполагается, что у продукта есть поле name
+                        li.innerHTML = `
+                            <h3>${product.name}</h3>
+                            ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}">` : ''}
+                            <p>${product.description}</p>
+                            <p>Цена: ${product.price} руб.</p>
+                            <p>Наличие: ${product.in_stock}</p>
+                        `;
                         productList.appendChild(li);
                     });
                     noProductsMessage.style.display = 'none'; // Скрыть сообщение
