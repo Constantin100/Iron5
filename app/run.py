@@ -29,6 +29,7 @@ class Product(db.Model):
     category = db.Column(db.String(50), nullable=False)  # Добавляем атрибут category
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     images = db.relationship('ProductImage', backref='product', lazy=True)
+    active = db.Column(db.Boolean, default=True)  # Добавляем атрибут active
 
     def __repr__(self):
         return f'<Product {self.name}>'
@@ -67,11 +68,11 @@ def products():
 def get_products():
     category = request.args.get('category')
     print(f"Запрашиваемая категория: {category}")  # Отладочное сообщение
-    products = Product.query.all()  # Получаем все продукты из базы данных
     if category:
-        products = [product for product in products if product.category == category]
-    if not products:
-        return jsonify({"products": []}), 200
+        products = Product.query.filter_by(category=category).all()
+    else:
+        products = Product.query.all()
+    
     product_list = [{"name": product.name, "description": product.description, "price": product.price} for product in products]
     print(f"Найденные продукты: {product_list}")  # Отладочное сообщение
     return jsonify({"products": product_list})

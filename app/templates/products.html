@@ -21,9 +21,11 @@
     console.log('Категория:', category); // Отладочное сообщение
     if (category) {
         loadProducts(category); // Загружаем продукты по категории
+    } else {
+        loadProducts(); // Загружаем все продукты, если категория не указана
     }
 
-    function loadProducts(category) {
+    function loadProducts(category = '') {
         console.log('Загрузка продуктов для категории:', category); // Отладочное сообщение
         fetch(`/api/products?category=${category}`)
             .then(response => {

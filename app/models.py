@@ -17,6 +17,7 @@ class Product(db.Model):
     category = db.Column(db.String(50), nullable=False)  # Добавляем атрибут category
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())  # Изменено на db.func.current_timestamp()
     images = db.relationship('ProductImage', backref='product', lazy=True)
+    active = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return f'<Product {self.name}>'
