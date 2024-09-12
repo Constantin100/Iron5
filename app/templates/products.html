@@ -14,10 +14,10 @@
 <div id="product-list">
     <ul id="products">
         {% for product in products %}
-            <li>
+            <li class="product-item">
                 <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
                 {% if product.images %}
-                    <img src="{{ product.images[0] }}" alt="{{ product.name }}">
+                    <img src="{{ product.images[0] }}" alt="{{ product.name }}" class="product-image">
                 {% endif %}
                 <p>{{ product.description }}</p>
                 <p>Цена: {{ product.price }} руб.</p>
@@ -27,6 +27,8 @@
     </ul>
     <p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
 </div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
 
 <script>
     // Получаем категорию из URL
@@ -56,11 +58,12 @@
                     data.products.forEach(product => {
                         console.log('Обработка продукта:', product); // Отладочное сообщение
                         const li = document.createElement('li');
+                        li.className = 'product-item';
                         const productUrl = `/product/${product.id}`;
                         console.log('URL продукта:', productUrl); // Отладочное сообщение
                         li.innerHTML = `
                             <h3><a href="${productUrl}">${product.name}</a></h3>
-                            ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}">` : ''}
+                            ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}" class="product-image">` : ''}
                             <p>${product.description}</p>
                             <p>Цена: ${product.price} руб.</p>
                             <p>Наличие: ${product.in_stock}</p>

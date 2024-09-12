@@ -1,0 +1,26 @@
+.product-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.product-item h3 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.product-item p {
+    font-family: 'Arial', sans-serif;
+    font-size: 1em;
+    color: #666;
+}
+
+.product-image {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
