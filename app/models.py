@@ -11,14 +11,14 @@ class User(db.Model):
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)  # Изменено на 80 символов
-    description = db.Column(db.String(200), nullable=True)  # Изменено на 200 символов
+    name = db.Column(db.String(80), nullable=False) 
+    description = db.Column(db.String(200), nullable=True) 
     price = db.Column(db.Float, nullable=False)
-    category = db.Column(db.String(50), nullable=False)  # Добавляем атрибут category
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())  # Изменено на db.func.current_timestamp()
+    category = db.Column(db.String(50), nullable=False)  
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())  
     images = db.relationship('ProductImage', backref='product', lazy=True)
     active = db.Column(db.Boolean, default=True)
-
+    in_stock = db.Column(db.String(50), nullable=False) 
     def __repr__(self):
         return f'<Product {self.name}>'
 

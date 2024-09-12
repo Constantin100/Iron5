@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать продукт</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <div class="edit-product-container">
+        <h2>Редактировать продукт</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="name">Название продукта:</label>
+                <input type="text" id="name" name="name" value="{{ product.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea id="description" name="description" required>{{ product.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                <select id="category" name="category" required>
+                    <option value="Ножи" {% if product.category == 'Ножи' %}selected{% endif %}>Ножи</option>
+                    <option value="Топоры" {% if product.category == 'Топоры' %}selected{% endif %}>Топоры</option>
+                    <option value="Сувениры" {% if product.category == 'Сувениры' %}selected{% endif %}>Сувениры</option>
+                    <option value="Ковка в интерьер" {% if product.category == 'Ковка в интерьер' %}selected{% endif %}>Ковка в интерьер</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="price">Цена:</label>
+                <input type="number" id="price" name="price" value="{{ product.price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="active">Активен:</label>
+                <input type="checkbox" id="active" name="active" {% if product.active %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                <label for="in_stock">Наличие:</label>
+                <select id="in_stock" name="in_stock" required>
+                    <option value="В наличии" {% if product.in_stock == 'В наличии' %}selected{% endif %}>В наличии</option>
+                    <option value="Под заказ" {% if product.in_stock == 'Под заказ' %}selected{% endif %}>Под заказ</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Сохранить изменения</button>
+        </form>
+        <a href="{{ url_for('admin') }}" class="back-link">Вернуться в админ-панель</a>
+    </div>
+</body>
+</html>

@@ -7,7 +7,6 @@ from flask_migrate import Migrate
 from models import db, Product
 import os
 
-
 basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 app = Flask(__name__)
@@ -30,6 +29,7 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     images = db.relationship('ProductImage', backref='product', lazy=True)
     active = db.Column(db.Boolean, default=True)  # Добавляем атрибут active
+    in_stock = db.Column(db.String(50), nullable=False)  # Добавляем атрибут in_stock
 
     def __repr__(self):
         return f'<Product {self.name}>'
@@ -122,7 +122,7 @@ def add_product():
         active = 'active' in request.form
         in_stock = request.form['in_stock']
         # Логика для сохранения продукта
-        new_product = Product(name=name, description=description, price=price, category=category)  # Передаем category
+        new_product = Product(name=name, description=description, price=price, category=category, active=active, in_stock=in_stock)  # Передаем category и другие поля
         db.session.add(new_product)
         db.session.commit()
         for image in images:
@@ -131,6 +131,31 @@ def add_product():
             db.session.commit()
         return redirect(url_for('admin'))
     return render_template('add_product.html')
+
+@app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
+@session_login_required
+def edit_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    if request.method == 'POST':
+        product.name = request.form['name']
+        product.description = request.form['description']
+        product.price = request.form['price']
+        product.category = request.form['category']
+        product.active = 'active' in request.form
+        product.in_stock = request.form['in_stock']
+        db.session.commit()
+        flash('Продукт успешно обновлен')
+        return redirect(url_for('admin'))
+    return render_template('edit_product.html', product=product)
+
+@app.route('/delete_product/<int:product_id>', methods=['POST'])
+@session_login_required
+def delete_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+    flash('Продукт успешно удален')
+    return redirect(url_for('admin'))
 
 @app.errorhandler(404)
 def not_found(error):
