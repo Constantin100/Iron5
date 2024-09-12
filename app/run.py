@@ -57,7 +57,7 @@ def contacts():
 @app.route('/products')
 def products():
     category = request.args.get('category')
-    products = Product.query.all()  # Получаем все продукты из базы данных
+    products = Product.query.filter_by(active=True).all()  # Получаем только активные продукты
     if category:
         products = [product for product in products if product.category == category]
     if not products:
@@ -69,9 +69,9 @@ def get_products():
     category = request.args.get('category')
     print(f"Запрашиваемая категория: {category}")  # Отладочное сообщение
     if category:
-        products = Product.query.filter_by(category=category).all()
+        products = Product.query.filter_by(category=category, active=True).all()
     else:
-        products = Product.query.all()
+        products = Product.query.filter_by(active=True).all()
     
     product_list = [{"name": product.name, "description": product.description, "price": product.price} for product in products]
     print(f"Найденные продукты: {product_list}")  # Отладочное сообщение

@@ -9,7 +9,9 @@
 <!-- Список продуктов -->
 <div id="product-list">
     <ul id="products">
-        <!-- Здесь будет динамически добавляться список продуктов -->
+        {% for product in products %}
+            <li>{{ product.name }} - {{ product.price }} руб.</li>
+        {% endfor %}
     </ul>
     <p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
 </div>
