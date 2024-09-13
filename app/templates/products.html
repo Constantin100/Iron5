@@ -15,13 +15,15 @@
     <ul id="products">
         {% for product in products %}
             <li class="product-item">
-                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
                 {% if product.images %}
                     <img src="{{ product.images[0] }}" alt="{{ product.name }}" class="product-image">
                 {% endif %}
-                <p>{{ product.description }}</p>
-                <p>Цена: {{ product.price }} руб.</p>
-                <p>Наличие: {{ product.in_stock }}</p>
+                <div>
+                    <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+                    <p>{{ product.description }}</p>
+                    <p>Цена: {{ product.price }} руб.</p>
+                    <p>Наличие: {{ product.in_stock }}</p>
+                </div>
             </li>
         {% endfor %}
     </ul>
@@ -62,11 +64,13 @@
                         const productUrl = `/product/${product.id}`;
                         console.log('URL продукта:', productUrl); // Отладочное сообщение
                         li.innerHTML = `
-                            <h3><a href="${productUrl}">${product.name}</a></h3>
                             ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}" class="product-image">` : ''}
-                            <p>${product.description}</p>
-                            <p>Цена: ${product.price} руб.</p>
-                            <p>Наличие: ${product.in_stock}</p>
+                            <div>
+                                <h3><a href="${productUrl}">${product.name}</a></h3>
+                                <p>${product.description}</p>
+                                <p>Цена: ${product.price} руб.</p>
+                                <p>Наличие: ${product.in_stock}</p>
+                            </div>
                         `;
                         productList.appendChild(li);
                     });

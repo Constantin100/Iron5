@@ -1,4 +1,6 @@
 .product-item {
+    display: flex;
+    align-items: flex-start;
     margin-bottom: 20px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -10,24 +12,27 @@
     font-family: 'Arial', sans-serif;
     font-size: 1.2em;
     color: #333;
+    margin: 0 0 10px 0;
 }
 
 .product-item p {
     font-family: 'Arial', sans-serif;
     font-size: 1em;
     color: #666;
+    margin: 5px 0;
 }
 
 .product-image {
     max-width: 150px;
     height: auto;
-    display: block;
-    margin-bottom: 10px;
+    margin-right: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 /* Стили для хлебных крошек */
 .breadcrumb a {
-    color: #7e9722; /* Темно-серый цвет для ссылок */
+    color: #cccccc; /* Светло-серый цвет для ссылок */
     text-decoration: none;
 }
 
@@ -39,5 +44,5 @@
     font-family: 'Arial', sans-serif;
     font-size: 0.9em;
     margin-bottom: 20px;
-    color: #cccccc; /* Цвет для неактивных элементов */
+    color: #666; /* Цвет для неактивных элементов */
 }
