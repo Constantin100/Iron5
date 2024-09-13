@@ -24,3 +24,20 @@
     display: block;
     margin-bottom: 10px;
 }
+
+/* Стили для хлебных крошек */
+.breadcrumb a {
+    color: #7e9722; /* Темно-серый цвет для ссылок */
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    color: #cccccc; /* Цвет для неактивных элементов */
+}
