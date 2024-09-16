@@ -10,13 +10,80 @@
 <div class="product-detail-container">
     <h2>{{ product.name }}</h2>
     <div class="product-images">
-        {% for image in product.images %}
-            <img src="{{ url_for('get_image', image_id=image.id) }}" alt="{{ product.name }}">
-        {% endfor %}
+        {% if product.images %}
+            <img src="{{ url_for('get_image', image_id=product.images[0].id) }}" alt="{{ product.name }}" class="main-image" id="main-image">
+            <div class="thumbnail-images">
+                {% for image in product.images %}
+                    <img src="{{ url_for('get_image', image_id=image.id) }}" alt="{{ product.name }}" class="thumbnail" data-index="{{ loop.index0 }}">
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
     <p>{{ product.description }}</p>
     <p>Цена: {{ product.price }} руб.</p>
     <p>Наличие: {{ product.in_stock }}</p>
     <a href="{{ url_for('products') }}" class="back-link">Вернуться к списку продуктов</a>
 </div>
+
+<div id="image-modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-image">
+    <a class="prev">&#10094;</a>
+    <a class="next">&#10095;</a>
+</div>
+
+<script>
+    const images = [{% for image in product.images %}"{{ url_for('get_image', image_id=image.id) }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+    let currentIndex = 0;
+
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+    const mainImage = document.getElementById('main-image');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const closeBtn = document.querySelector('.close');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+
+    function openModal(index) {
+        modal.style.display = 'block';
+        modalImg.src = images[index];
+        currentIndex = index;
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    function showPrevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        modalImg.src = images[currentIndex];
+    }
+
+    function showNextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        modalImg.src = images[currentIndex];
+    }
+
+    mainImage.onclick = function() {
+        openModal(0);
+    }
+
+    thumbnails.forEach((thumbnail) => {
+        thumbnail.onclick = function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            mainImage.src = images[index];
+            openModal(index);
+        }
+    });
+
+    closeBtn.onclick = closeModal;
+    prevBtn.onclick = showPrevImage;
+    nextBtn.onclick = showNextImage;
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
 {% endblock %}
