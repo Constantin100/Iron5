@@ -6,27 +6,27 @@
 
 .product-item {
     box-sizing: border-box;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    color: #fff;
 }
 
 .product-item h3 {
     font-family: 'Arial', sans-serif;
     font-size: 1.2em;
-    color: #333;
+    color: #fff;
     margin: 10px 0;
 }
 
 .product-item p {
     font-family: 'Arial', sans-serif;
     font-size: 1em;
-    color: #666;
+    color: #ccc;
     margin: 5px 0;
 }
 
@@ -34,13 +34,21 @@
     max-width: 100%;
     height: auto;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.product-item a {
+    color: #ffd700;
+    text-decoration: none;
+}
+
+.product-item a:hover {
+    text-decoration: underline;
 }
 
 /* Стили для хлебных крошек */
 .breadcrumb a {
-    color: #cccccc; /* Светло-серый цвет для ссылок */
+    color: #cccccc;
     text-decoration: none;
 }
 
@@ -52,5 +60,5 @@
     font-family: 'Arial', sans-serif;
     font-size: 0.9em;
     margin-bottom: 20px;
-    color: #666; /* Цвет для неактивных элементов */
+    color: #666;
 }
