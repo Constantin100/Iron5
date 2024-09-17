@@ -15,7 +15,7 @@
     {% for product in products %}
         <div class="product-item">
             {% if product.images %}
-                <img src="{{ url_for('get_image', image_id=product.images[0].id) }}" alt="{{ product.name }}" class="product-image">
+                <img src="{{ url_for('get_image', image_id=product.images[0].id) }}" alt="{{ product.name }}" class="product-image" onclick="openModal(this.src)">
             {% endif %}
             <div class="product-info">
                 <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
@@ -27,6 +27,12 @@
     {% endfor %}
 </div>
 <p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
+
+<!-- Модальное окно для увеличенного изображения -->
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
 
@@ -62,7 +68,7 @@
                         const productUrl = `/product/${product.id}`;
                         console.log('URL продукта:', productUrl);
                         div.innerHTML = `
-                            ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}" class="product-image">` : ''}
+                            ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}" class="product-image" onclick="openModal('${product.images[0]}')">` : ''}
                             <div class="product-info">
                                 <h3><a href="${productUrl}">${product.name}</a></h3>
                                 <p>${product.description}</p>
@@ -82,6 +88,19 @@
                 const noProductsMessage = document.getElementById('no-products-message');
                 noProductsMessage.style.display = 'block';
             });
+    }
+
+    // Функции для модального окна
+    function openModal(imgSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modal.style.display = "block";
+        modalImg.src = imgSrc;
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = "none";
     }
 </script>
 {% endblock %}
