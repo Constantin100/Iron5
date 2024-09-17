@@ -1,34 +1,27 @@
 .product-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
+    justify-content: space-between;
 }
 
 .product-item {
+    flex: 0 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
     box-sizing: border-box;
     padding: 15px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     color: #fff;
-    height: 100%;
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
 }
 
-.product-item h3 {
-    font-family: 'Arial', sans-serif;
-    font-size: 1.2em;
-    color: #fff;
-    margin: 10px 0;
-}
-
-.product-item p {
-    font-family: 'Arial', sans-serif;
-    font-size: 1em;
-    color: #ccc;
-    margin: 5px 0;
+.product-item:hover {
+    transform: scale(1.02);
 }
 
 .product-image {
@@ -37,6 +30,25 @@
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+.product-info {
+    width: 100%;
+    text-align: center;
+}
+
+.product-item h3 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2em;
+    color: #ffd700;
+    margin: 10px 0;
+}
+
+.product-item p {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 5px 0;
 }
 
 .product-item a {
@@ -48,114 +60,9 @@
     text-decoration: underline;
 }
 
-/* Стили для хлебных крошек */
-.breadcrumb a {
-    color: #cccccc;
-    text-decoration: none;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-
-.breadcrumb {
-    font-family: 'Arial', sans-serif;
-    font-size: 0.9em;
-    margin-bottom: 20px;
-    color: #666;
-}
-
-/* Стили для страницы деталей продукта */
-.product-detail-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    color: #fff;
-}
-
-.product-images {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.main-image {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-.thumbnail-images {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    max-width: 100%;
-    padding: 10px 0;
-}
-
-.thumbnail {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.9);
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
-    max-width: 90%;
-    max-height: 90%;
-}
-
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -50px;
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+@media (max-width: 768px) {
+    .product-item {
+        flex: 0 1 100%;
+        max-width: 100%;
+    }
 }

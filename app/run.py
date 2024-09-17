@@ -36,6 +36,18 @@ class Product(db.Model):
     def __repr__(self):
         return f'<Product {self.name}>'
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'category': self.category,
+            'created_at': self.created_at,
+            'active': self.active,
+            'in_stock': self.in_stock
+        }
+
 class ProductImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(255), nullable=False)
@@ -44,6 +56,13 @@ class ProductImage(db.Model):
 
     def __repr__(self):
         return f'<ProductImage {self.filename}>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'filename': self.filename,
+            'product_id': self.product_id
+        }
 
 # Функция для обработки события перед вставкой
 def insert_default_image(mapper, connection, target):
@@ -206,7 +225,8 @@ def delete_product(product_id):
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
-    return render_template('product_detail.html', product=product)
+    image_urls = [url_for('get_image', image_id=image.id) for image in product.images]
+    return render_template('product_detail.html', product=product, image_urls=image_urls)
 
 @app.errorhandler(404)
 def not_found(error):

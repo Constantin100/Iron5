@@ -15,16 +15,18 @@
     {% for product in products %}
         <div class="product-item">
             {% if product.images %}
-                <img src="{{ product.images[0] }}" alt="{{ product.name }}" class="product-image">
+                <img src="{{ url_for('get_image', image_id=product.images[0].id) }}" alt="{{ product.name }}" class="product-image">
             {% endif %}
-            <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
-            <p>{{ product.description }}</p>
-            <p>Цена: {{ product.price }} руб.</p>
-            <p>Наличие: {{ product.in_stock }}</p>
+            <div class="product-info">
+                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+                <p>{{ product.description }}</p>
+                <p>Цена: {{ product.price }} руб.</p>
+                <p>Наличие: {{ product.in_stock }}</p>
+            </div>
         </div>
     {% endfor %}
-    <p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
 </div>
+<p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
 
@@ -32,51 +34,53 @@
     // Получаем категорию из URL
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
-    console.log('Категория:', category); // Отладочное сообщение
+    console.log('Категория:', category);
     if (category) {
-        loadProducts(category); // Загружаем продукты по категории
+        loadProducts(category);
     } else {
-        loadProducts(); // Загружаем все продукты, если категория не указана
+        loadProducts();
     }
 
     function loadProducts(category = '') {
-        console.log('Загрузка продуктов для категории:', category); // Отладочное сообщение
+        console.log('Загрузка продуктов для категории:', category);
         fetch(`/api/products?category=${category}`)
             .then(response => {
-                console.log('Ответ от API:', response); // Отладочное сообщение
+                console.log('Ответ от API:', response);
                 return response.json();
             })
             .then(data => {
-                console.log('Полученные данные:', data); // Отладочное сообщение
+                console.log('Полученные данные:', data);
                 const productList = document.getElementById('product-list');
                 const noProductsMessage = document.getElementById('no-products-message');
-                productList.innerHTML = ''; // Очистить список
+                productList.innerHTML = '';
 
                 if (data.products && data.products.length > 0) {
                     data.products.forEach(product => {
-                        console.log('Обработка продукта:', product); // Отладочное сообщение
+                        console.log('Обработка продукта:', product);
                         const div = document.createElement('div');
                         div.className = 'product-item';
                         const productUrl = `/product/${product.id}`;
-                        console.log('URL продукта:', productUrl); // Отладочное сообщение
+                        console.log('URL продукта:', productUrl);
                         div.innerHTML = `
                             ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}" class="product-image">` : ''}
-                            <h3><a href="${productUrl}">${product.name}</a></h3>
-                            <p>${product.description}</p>
-                            <p>Цена: ${product.price} руб.</p>
-                            <p>Наличие: ${product.in_stock}</p>
+                            <div class="product-info">
+                                <h3><a href="${productUrl}">${product.name}</a></h3>
+                                <p>${product.description}</p>
+                                <p>Цена: ${product.price} руб.</p>
+                                <p>Наличие: ${product.in_stock}</p>
+                            </div>
                         `;
                         productList.appendChild(div);
                     });
-                    noProductsMessage.style.display = 'none'; // Скрыть сообщение
+                    noProductsMessage.style.display = 'none';
                 } else {
-                    noProductsMessage.style.display = 'block'; // Показать сообщение
+                    noProductsMessage.style.display = 'block';
                 }
             })
             .catch(error => {
                 console.error('Ошибка загрузки продуктов:', error);
                 const noProductsMessage = document.getElementById('no-products-message');
-                noProductsMessage.style.display = 'block'; // Показать сообщение в случае ошибки
+                noProductsMessage.style.display = 'block';
             });
     }
 </script>

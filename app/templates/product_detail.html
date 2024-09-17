@@ -33,7 +33,7 @@
 </div>
 
 <script>
-    const images = [{% for image in product.images %}"{{ url_for('get_image', image_id=image.id) }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+    const images = JSON.parse('{{ image_urls | tojson | safe }}');
     let currentIndex = 0;
 
     const modal = document.getElementById('image-modal');
@@ -68,10 +68,8 @@
         openModal(0);
     }
 
-    thumbnails.forEach((thumbnail) => {
+    thumbnails.forEach((thumbnail, index) => {
         thumbnail.onclick = function() {
-            const index = parseInt(this.getAttribute('data-index'));
-            mainImage.src = images[index];
             openModal(index);
         }
     });
