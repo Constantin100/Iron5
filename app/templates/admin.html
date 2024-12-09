@@ -5,21 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="admin-container">
         <h2>Админ-панель</h2>
-        <a href="{{ url_for('add_product') }}" class="button">Добавить продукт</a>
-        <a href="{{ url_for('logout') }}" class="button">Выйти</a>
+
+        <div style="display: flex; justify-content: space-between;">
+            <a href="{{ url_for('add_product') }}" class="button">Добавить продукт</a>
+            <a href="{{ url_for('logout') }}" class="button">Выйти</a>
+        </div>
+        <hr style="border: 1px solid #fff; margin: 10px 0;">
+        
         <h3>Список продуктов:</h3>
         <ul>
             {% for product in products %}
                 <li>
-                    {{ product.name }} ({{ product.category }}) - {% if product.active %}Активен{% else %}Неактивен{% endif %} - {{ product.in_stock }}
-                    <a href="{{ url_for('edit_product', product_id=product.id) }}" class="button">Редактировать</a>
-                    <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="button">Удалить</button>
-                    </form>
+                    <span>{{ product.name }} ({{ product.category }}) - {% if product.active %}Активен{% else %}Неактивен{% endif %} - {{ product.in_stock }}</span>
+                    <div>
+                        <a href="{{ url_for('edit_product', product_id=product.id) }}" class="edit_button_admin_menu">Редактировать</a>
+                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="button">Удалить</button>
+                        </form>
+                    </div>
                 </li>
             {% endfor %}
         </ul>

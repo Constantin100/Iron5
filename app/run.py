@@ -168,34 +168,24 @@ def admin():
 @session_login_required
 def add_product():
     if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        category = request.form['category']  # Получаем значение category из формы
-        price = request.form.get('price', 0.0)  # Устанавливаем значение по умолчанию для price
-        images = request.files.getlist('images')
-        active = 'active' in request.form
-        in_stock = request.form['in_stock']
         # Логика для сохранения продукта
-        new_product = Product(name=name, description=description, price=price, category=category, active=active, in_stock=in_stock)  # Передаем category и другие поля
+        name = request.form.get('name')
+        description = request.form.get('description')
+        category = request.form.get('category')  # Используйте get для безопасного доступа
+        price = request.form.get('price', 0.0)
+        in_stock = request.form.get('in_stock', '0')  # Значение по умолчанию
+
+        if not category:
+            flash('Пожалуйста, выберите категорию продукта.')
+            return redirect(url_for('add_product'))
+
+        new_product = Product(name=name, description=description, price=price, category=category, active=True, in_stock=in_stock)
         db.session.add(new_product)
         db.session.commit()
-        
-        if not images:
-            # Добавляем шаблонное изображение, если изображения не загружены
-            with open(os.path.join(basedir, 'static/images/no_image.jpg'), 'rb') as file:
-                filename = 'no_image.jpg'
-                new_image = ProductImage(filename=filename, data=file.read(), product_id=new_product.id)
-                db.session.add(new_image)
-                db.session.commit()
-        else:
-            for image in images:
-                filename = secure_filename(image.filename)
-                new_image = ProductImage(filename=filename, data=image.read(), product_id=new_product.id)
-                db.session.add(new_image)
-                db.session.commit()
-                
+
         return redirect(url_for('admin'))
-    return render_template('add_product.html')
+
+    return render_template('add_product.html', product=None)
 
 @app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 @session_login_required
@@ -217,11 +207,16 @@ def edit_product(product_id):
 @session_login_required
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)
+    
+    # Удаляем все связанные изображения
+    for image in product.images:
+        db.session.delete(image)
+    
     db.session.delete(product)
     db.session.commit()
     flash('Продукт успешно удален')
     return redirect(url_for('admin'))
-
+    
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)

@@ -38,14 +38,14 @@
 }
 
 .product-item h3 {
-    font-family: 'Arial', sans-serif;
+    font-family: "Play", serif;
     font-size: 1.2em;
     color: #ffd700;
     margin: 10px 0;
 }
 
 .product-item p {
-    font-family: 'Arial', sans-serif;
+    font-family: "Play", serif;
     font-size: 0.9em;
     color: #ccc;
     margin: 5px 0;
@@ -184,4 +184,9 @@
 
 .back-link:hover {
     text-decoration: underline;
+}
+
+.breadcrumb a {
+    color: #ffd700;
+    text-decoration: none;
 }

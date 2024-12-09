@@ -19,6 +19,7 @@ class Product(db.Model):
     images = db.relationship('ProductImage', backref='product', lazy=True)
     active = db.Column(db.Boolean, default=True)
     in_stock = db.Column(db.String(50), nullable=False) 
+    quantity = db.Column(db.Integer, nullable=False)  # Новое поле для количества
 
     def __repr__(self):
         return f'<Product {self.name}>'
