@@ -7,51 +7,24 @@
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<<<<<<< HEAD
-=======
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
->>>>>>> 190b226f86e6d449942ff806a72c1757cdb77be8
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <a href="{{ url_for('home') }}" class="logo-link">
-<<<<<<< HEAD
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Schnaps Metall" class="logo-image">
-            </a>
-            <div class="header-quote">
-                <span class="quote-text">Кованое искусство - где металл обретает душу</span>
-            </div>
-        </div>
-    </header>
-    
-    <div class="main-container">
-=======
-                <h1 class="gothic-font">
-                    <span class="logo-icon">⚒</span>
-                    Schnaps Metall
-                    <span class="logo-icon">⚒</span>
-                </h1>
-            </a>
-            <nav class="nav-container">
-                <a href="{{ url_for('products') }}" class="nav-button {% if request.endpoint == 'products' %}active{% endif %}">
-                    <span class="button-content">Продукты</span>
-                </a>
-                <a href="{{ url_for('about') }}" class="nav-button {% if request.endpoint == 'about' %}active{% endif %}">
-                    <span class="button-content">Обо мне</span>
-                </a>
-                <a href="{{ url_for('contacts') }}" class="nav-button {% if request.endpoint == 'contacts' %}active{% endif %}">
-                    <span class="button-content">Контакты</span>
-                </a>
-            </nav>
-        </div>
+        <h1 class="gothic-font">
+            <a href="{{ url_for('home') }}" class="logo-link">Schnaps Metall</a>
+        </h1>
+        <nav>
+            <a href="{{ url_for('home') }}" class="button {% if request.endpoint == 'home' %}active{% endif %}">Главная</a>
+            <a href="{{ url_for('products') }}" class="button {% if request.endpoint == 'products' %}active{% endif %}">Продукты</a>
+            <a href="{{ url_for('about') }}" class="button {% if request.endpoint == 'about' %}active{% endif %}">Обо мне</a>
+            <a href="{{ url_for('contacts') }}" class="button {% if request.endpoint == 'contacts' %}active{% endif %}">Контакты</a>
+            {% if 'logged_in' in session %}
+                <a href="{{ url_for('admin') }}" class="button {% if request.endpoint == 'admin' %}active{% endif %}">Админ</a>
+            {% endif %}
+        </nav>
     </header>
     
     <div class="main-content">
-        {% if request.endpoint == 'products' %}
->>>>>>> 190b226f86e6d449942ff806a72c1757cdb77be8
         <aside class="sidebar">
             <h2 class="categories-title">Меню</h2>
             
@@ -92,10 +65,7 @@
                 </a>
             </nav>
         </aside>
-<<<<<<< HEAD
-        <main class="main-content">
-=======
-        {% endif %}
+        
         <div class="content">
 >>>>>>> 190b226f86e6d449942ff806a72c1757cdb77be8
             <nav class="breadcrumb">
@@ -106,31 +76,8 @@
     </div>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Контакты</h3>
-                <p>Телефон: +375 33 350 7020</p>
-                <p>Email: info@schnaps-metall.by</p>
-                <p>Адрес: г. Минск, ул. Кузнечная, 1</p>
-            </div>
-            <div class="footer-section">
-                <h3>Социальные сети</h3>
-                <div class="social-icons">
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
-                </div>
-            </div>
-<<<<<<< HEAD
-=======
-            <div class="footer-section">
-                <h3>О нас</h3>
-                <p>Создаем уникальные кованые изделия с 2010 года</p>
-                <p>Индивидуальный подход к каждому заказу</p>
-                <p>Гарантия качества</p>
-            </div>
->>>>>>> 190b226f86e6d449942ff806a72c1757cdb77be8
-        </div>
+        <p>Контакты: <a href="tel:+375333507070">+375 33 350 7070</a></p>
+        <p>Instagram: <a href="https://www.instagram.com/jury_blacksmith" target="_blank">@jury_blacksmith</a></p>
     </footer>
 
     <script>
