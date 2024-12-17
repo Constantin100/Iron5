@@ -1,15 +1,521 @@
 {% extends "base.html" %}
 
-
-{% block title %}Главная страница{% endblock %}
-
 {% block content %}
-<div class="home">
-    <h2 class="section-title">Добро пожаловать</h2>
-    <p>
+<!-- Декоративная линия -->
+<div class="decorative-line">
+    <div class="line-pattern"></div>
+    <div class="line-glow"></div>
+</div>
+
+<!-- Приветственная секция с улучшенным дизайном -->
+<div class="welcome-section">
+    <h1 class="welcome-title">Кованое искусство в каждой детали</h1>
+    
+    <p class="welcome-text">
         Приветствую всех на моём личном сайте. Здесь Вы сможете насладиться красотою кованного железа, 
         рассмотреть мои работы. Так же делюсь здесь своими наблюдениями, интересными статьями по теме. 
         Приятного просмотра! Кованое искусство - где металл обретает душу.
     </p>
 </div>
+
+<!-- Заменяем разделитель с орнаментом на более простой -->
+<div class="ornament-divider">
+    <div class="ornament-line left"></div>
+    <div class="ornament-line right"></div>
+</div>
+
+<!-- Карусель работ с улучшенным заголовком -->
+<div class="works-carousel">
+    <div class="section-header">
+        <div class="header-decoration left"></div>
+        <h2 class="carousel-title">Мои работы</h2>
+        <div class="header-decoration right"></div>
+    </div>
+    <div class="carousel-container">
+        <button class="carousel-button prev">&#10094;</button>
+        <div class="carousel-track">
+            {% for i in range(1, 7) %}
+            <div class="carousel-slide">
+                <img src="{{ url_for('static', filename='images/im' + i|string + '.jpg') }}" alt="Работа {{ i }}">
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-button next">&#10095;</button>
+    </div>
+    <div class="carousel-dots"></div>
+</div>
+
+<style>
+/* Декоративная линия вверху */
+.decorative-line {
+    position: relative;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e6c300, transparent);
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.line-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+
+.line-glow {
+    position: absolute;
+    top: -10px;
+    left: -100%;
+    width: 50%;
+    height: 20px;
+    background: linear-gradient(90deg, transparent, rgba(230, 195, 0, 0.3), transparent);
+    animation: glowMove 3s linear infinite;
+}
+
+/* Обновляем стили для welcome-section */
+.welcome-section {
+    position: relative;
+    padding: 40px;
+    background: linear-gradient(90deg, 
+        rgba(40, 40, 40, 0.9) 0%,
+        rgba(25, 25, 25, 0.95) 50%,
+        rgba(10, 10, 10, 0.98) 100%
+    );
+    border: 1px solid rgba(230, 195, 0, 0.3);
+    margin: 40px 0;
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.3),
+        inset 0 0 50px rgba(230, 195, 0, 0.05),
+        0 0 15px rgba(230, 195, 0, 0.1);
+    animation: glowPulse 3s infinite;
+}
+
+/* Обновляем анимацию, чтобы рамка тоже слегка светилась */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 
+            0 0 30px rgba(0, 0, 0, 0.3),
+            inset 0 0 50px rgba(230, 195, 0, 0.05),
+            0 0 15px rgba(230, 195, 0, 0.1);
+        border-color: rgba(230, 195, 0, 0.3);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(0, 0, 0, 0.3),
+            inset 0 0 60px rgba(230, 195, 0, 0.08),
+            0 0 25px rgba(230, 195, 0, 0.15);
+        border-color: rgba(230, 195, 0, 0.5);
+    }
+    100% {
+        box-shadow: 
+            0 0 30px rgba(0, 0, 0, 0.3),
+            inset 0 0 50px rgba(230, 195, 0, 0.05),
+            0 0 15px rgba(230, 195, 0, 0.1);
+        border-color: rgba(230, 195, 0, 0.3);
+    }
+}
+
+/* Удаляем стили для угловых декораций */
+.corner-decoration {
+    display: none;
+}
+
+.title-underline {
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e6c300, transparent);
+    margin: 20px auto;
+    position: relative;
+}
+
+.title-underline::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 8px;
+    background: #e6c300;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+/* Обновляем стили разделителя */
+.ornament-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+    position: relative;
+}
+
+.ornament-line {
+    height: 2px;
+    flex-grow: 1;
+    position: relative;
+}
+
+.ornament-line.left {
+    background: linear-gradient(90deg, transparent, #e6c300);
+}
+
+.ornament-line.right {
+    background: linear-gradient(90deg, #e6c300, transparent);
+}
+
+/* Улучшенный заголовок секции */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.header-decoration {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e6c300);
+    position: relative;
+}
+
+.header-decoration.right {
+    background: linear-gradient(90deg, #e6c300, transparent);
+}
+
+/* Анимации */
+@keyframes patternMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(40px); }
+}
+
+@keyframes glowMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(300%); }
+}
+
+/* Медиа-запросы */
+@media (max-width: 768px) {
+    .welcome-section {
+        padding: 20px;
+    }
+    
+    .header-decoration {
+        width: 50px;
+    }
+}
+
+/* Стили для сетки особенностей */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.feature-card {
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.feature-card h3 {
+    color: #e6c300;
+    margin-bottom: 15px;
+}
+
+/* Стили для карусели */
+.works-carousel {
+    margin: 60px 0;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.carousel-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #e6c300;
+}
+
+.carousel-container {
+    position: relative;
+    overflow: visible;
+    padding: 0 44px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 20px;
+}
+
+.carousel-slide {
+    flex: 0 0 calc(25% - 20px);
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid rgba(230, 195, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: slideGlow 3s infinite;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.carousel-slide:hover img {
+    transform: scale(1.1);
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid rgba(230, 195, 0, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    color: #e6c300;
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    outline: none;
+}
+
+.carousel-button:hover {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: #e6c300;
+    color: #e6c300;
+    box-shadow: 0 0 15px rgba(230, 195, 0, 0.3);
+}
+
+.carousel-button:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-button.prev {
+    left: 0;
+    border-radius: 0 50% 50% 0;
+    border-left: none;
+}
+
+.carousel-button.next {
+    right: 0;
+    border-radius: 50% 0 0 50%;
+    border-right: none;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(230, 195, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: rgba(230, 195, 0, 1);
+}
+
+/* Стили для секции CTA */
+.cta-section {
+    text-align: center;
+    padding: 60px 40px;
+    background: linear-gradient(145deg, rgba(25, 25, 25, 0.9), rgba(10, 10, 10, 0.95));
+    border-radius: 15px;
+    margin-top: 40px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #e6c300, #ff8c00);
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(230, 195, 0, 0.3);
+}
+
+/* Обновляем медиа-запросы */
+@media (max-width: 1200px) {
+    .carousel-slide {
+        flex: 0 0 calc(33.333% - 20px);
+    }
+}
+
+@media (max-width: 992px) {
+    .carousel-slide {
+        flex: 0 0 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-slide {
+        flex: 0 0 calc(100% - 20px);
+    }
+    
+    .works-carousel {
+        padding: 0;
+    }
+    
+    .carousel-container {
+        padding: 0 36px;
+    }
+    
+    .carousel-button {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+}
+
+/* Добавляем легкий эффект свечения слева */
+.welcome-section::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(90deg,
+        rgba(230, 195, 0, 0.1),
+        transparent
+    );
+    pointer-events: none;
+}
+
+/* Добавляем анимацию свечения для слайдов */
+@keyframes slideGlow {
+    0% {
+        border-color: rgba(230, 195, 0, 0.3);
+        box-shadow: 
+            0 4px 15px rgba(0, 0, 0, 0.3),
+            0 0 15px rgba(230, 195, 0, 0.1);
+    }
+    50% {
+        border-color: rgba(230, 195, 0, 0.5);
+        box-shadow: 
+            0 4px 15px rgba(0, 0, 0, 0.3),
+            0 0 25px rgba(230, 195, 0, 0.15);
+    }
+    100% {
+        border-color: rgba(230, 195, 0, 0.3);
+        box-shadow: 
+            0 4px 15px rgba(0, 0, 0, 0.3),
+            0 0 15px rgba(230, 195, 0, 0.1);
+    }
+}
+
+/* Обновляем эффект при наведении */
+.carousel-slide:hover {
+    border-color: rgba(230, 195, 0, 0.6);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(230, 195, 0, 0.2);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.carousel-track');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const nextButton = document.querySelector('.next');
+    const prevButton = document.querySelector('.prev');
+    const dotsContainer = document.querySelector('.carousel-dots');
+    
+    let currentIndex = 0;
+    const slidesToShow = Math.floor(track.offsetWidth / slides[0].offsetWidth);
+    
+    // Создаем точки
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+    });
+    
+    const dots = document.querySelectorAll('.dot');
+    
+    function updateDots() {
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    function goToSlide(index) {
+        currentIndex = index;
+        const offset = -index * (slides[0].offsetWidth + 20);
+        track.style.transform = `translateX(${offset}px)`;
+        updateDots();
+    }
+    
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < slides.length - slidesToShow) {
+            goToSlide(currentIndex + 1);
+        } else {
+            goToSlide(0);
+        }
+    });
+    
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            goToSlide(currentIndex - 1);
+        } else {
+            goToSlide(slides.length - slidesToShow);
+        }
+    });
+    
+    // Автоматическая прокрутка
+    setInterval(() => {
+        if (currentIndex < slides.length - slidesToShow) {
+            goToSlide(currentIndex + 1);
+        } else {
+            goToSlide(0);
+        }
+    }, 5000);
+});
+</script>
 {% endblock %}

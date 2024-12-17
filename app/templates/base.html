@@ -5,50 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Кованые изделия{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1 class="gothic-font">
-            <a href="{{ url_for('home') }}" class="logo-link">Schnaps Metall</a>
-        </h1>
-        <nav>
-            <a href="{{ url_for('home') }}" class="button {% if request.endpoint == 'home' %}active{% endif %}">Главная</a>
-            <a href="{{ url_for('products') }}" class="button {% if request.endpoint == 'products' %}active{% endif %}">Продукты</a>
-            <a href="{{ url_for('about') }}" class="button {% if request.endpoint == 'about' %}active{% endif %}">Обо мне</a>
-            <a href="{{ url_for('contacts') }}" class="button {% if request.endpoint == 'contacts' %}active{% endif %}">Контакты</a>
-            {% if 'logged_in' in session %}
-                <a href="{{ url_for('admin') }}" class="button {% if request.endpoint == 'admin' %}active{% endif %}">Админ</a>
-            {% endif %}
-        </nav>
+        <div class="header-content">
+            <a href="{{ url_for('home') }}" class="logo-link">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Schnaps Metall" class="logo-image">
+            </a>
+            <div class="header-quote">
+                <span class="quote-text">Кованое искусство - где металл обретает душу</span>
+            </div>
+        </div>
     </header>
     
-    <div class="main-content">
+    <div class="main-container">
         <aside class="sidebar">
-            <h2 class="section-title">Категории</h2>
-            <ul>
-                <li><a href="{{ url_for('products', category='Ножи') }}" class="category-button">Ножи</a></li>
-                <li><a href="{{ url_for('products', category='Топоры') }}" class="category-button">Топоры</a></li>
-                <li><a href="{{ url_for('products', category='Сувениры') }}" class="category-button">Сувениры</a></li>
-                <li><a href="{{ url_for('products', category='Ковка в интерьер') }}" class="category-button">Ковка в интерьер</a></li>
-            </ul>
+            <h2 class="categories-title">Меню</h2>
+            
+            <nav class="categories-nav main-nav">
+                <a href="{{ url_for('home') }}" class="category-link {% if request.endpoint == 'home' %}active{% endif %}">
+                    <span>Главная</span>
+                </a>
+                <a href="{{ url_for('products') }}" class="category-link {% if request.endpoint == 'products' %}active{% endif %}">
+                    <span>Все продукты</span>
+                </a>
+            </nav>
+
+            <h3 class="categories-subtitle">Категории</h3>
+            
+            <nav class="categories-nav">
+                <a href="{{ url_for('products', category='Ножи') }}" class="category-link {% if category == 'Ножи' %}active{% endif %}">
+                    Ножи
+                </a>
+                <a href="{{ url_for('products', category='Топоры') }}" class="category-link {% if category == 'Топоры' %}active{% endif %}">
+                    Топоры
+                </a>
+                <a href="{{ url_for('products', category='Сувениры') }}" class="category-link {% if category == 'Сувениры' %}active{% endif %}">
+                    Сувениры
+                </a>
+                <a href="{{ url_for('products', category='Ковка в интерьер') }}" class="category-link {% if category == 'Ковка в интерьер' %}active{% endif %}">
+                    Ковка в интерьер
+                </a>
+            </nav>
+
+            <h3 class="categories-subtitle">Информация</h3>
+            
+            <nav class="categories-nav info-nav">
+                <a href="{{ url_for('about') }}" class="category-link {% if request.endpoint == 'about' %}active{% endif %}">
+                    Обо мне
+                </a>
+                <a href="{{ url_for('contacts') }}" class="category-link {% if request.endpoint == 'contacts' %}active{% endif %}">
+                    Контакты
+                </a>
+            </nav>
         </aside>
-        
-        <div class="content">
+        <main class="main-content">
             <nav class="breadcrumb">
                 {% block breadcrumb %}{% endblock %}
             </nav>
             {% block content %}{% endblock %}
-            <div id="message" style="display: none; color: red;"></div>
-        </div>
+        </main>
     </div>
 
     <footer>
-        <p>Контакты: <a href="tel:+375333507070">+375 33 350 7070</a></p>
-        <p>Instagram: <a href="https://www.instagram.com/jury_blacksmith" target="_blank">@jury_blacksmith</a></p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Телефон: +375 33 350 7020</p>
+                <p>Email: info@schnaps-metall.by</p>
+                <p>Адрес: г. Минск, ул. Кузнечная, 1</p>
+            </div>
+            <div class="footer-section">
+                <h3>Социальные сети</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -75,5 +113,6 @@
                 });
         }
     </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
