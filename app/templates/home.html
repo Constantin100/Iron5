@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<<<<<<< HEAD
 <!-- Декоративная линия -->
 <div class="decorative-line">
     <div class="line-pattern"></div>
@@ -518,4 +519,95 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
 });
 </script>
+=======
+<section class="welcome-section">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1>Добро пожаловать в мир художественной ковки</h1>
+            <p>Погрузитесь в удивительный мир, где металл превращается в произведение искусства. Каждое изделие - это уникальная история, рассказанная языком огня и металла.</p>
+            <p>В нашей мастерской традиции древнего ремесла сочетаются с современными технологиями, создавая неповторимые произведения кузнечного искусства.</p>
+            <div class="tagline">Кованое искусство - где металл обретает душу</div>
+        </div>
+        <div class="welcome-image">
+            <img src="{{ url_for('static', filename='images/forge-work.jpg') }}" alt="Кузнечное искусство">
+        </div>
+    </div>
+</section>
+
+<!-- Добавляем после welcome-section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2 class="cta-title">Создайте свой уникальный шедевр</h2>
+        <p>Закажите консультацию прямо сейчас и получите скидку 10% на первый заказ</p>
+        <a href="#" class="cta-button">Заказать консультацию</a>
+    </div>
+</section>
+
+<section class="featured-products">
+    <h2 class="featured-title">Популярные изделия</h2>
+    <div class="product-carousel">
+        <!-- Добавьте несколько карточек товаров -->
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/product1.jpg') }}" alt="Кованые ворота">
+            <h3>Кованые ворота "Классика"</h3>
+            <p>От 2500 BYN</p>
+        </div>
+        <!-- Добавьте еще карточки -->
+    </div>
+</section>
+
+<section class="testimonials">
+    <h2 class="section-title">Отзывы наших клиентов</h2>
+    <div class="testimonial-grid">
+        <div class="testimonial-card">
+            <p>"Превосходная работа! Заказывали кованые ворота, результат превзошел все ожидания."</p>
+            <div class="testimonial-author">Александр П.</div>
+        </div>
+        <!-- Добавьте еще отзывы -->
+    </div>
+</section>
+
+<!-- Добавляем статистику -->
+<section class="statistics">
+    <div class="stats-container">
+        <div class="stat-item">
+            <div class="stat-number" data-count="1500">0</div>
+            <div class="stat-label">Выполненных заказов</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-count="98">0</div>
+            <div class="stat-label">Довольных клиентов %</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-count="12">0</div>
+            <div class="stat-label">Лет опыта</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-count="250">0</div>
+            <div class="stat-label">Уникальных изделий</div>
+        </div>
+    </div>
+</section>
+
+<!-- Добавляем преимущества -->
+<section class="features">
+    <div class="features-grid">
+        <div class="feature-item">
+            <i class="fas fa-hammer"></i>
+            <h3>Ручная работа</h3>
+            <p>Каждое изделие создается вручную с особым вниманием к деталям</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-star"></i>
+            <h3>Качество</h3>
+            <p>Используем только высококачественные материалы</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-clock"></i>
+            <h3>Точные сроки</h3>
+            <p>Гарантируем выполнение заказа в оговоренные сроки</p>
+        </div>
+    </div>
+</section>
+>>>>>>> 190b226f86e6d449942ff806a72c1757cdb77be8
 {% endblock %}
