@@ -8,12 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon_io/site.webmanifest">
 </head>
 <body>
     <header>
         <div class="header-content">
-            <a href="{{ url_for('home') }}" class="logo-link">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Schnaps Metall" class="logo-image">
+            <a href="{{ url_for('main.home') }}" class="logo-link">
+                <div class="logo-text">𝕾𝖈𝖍𝖓𝖆𝖕𝖘 𝕸𝖊𝖙𝖆𝖑𝖑</div>
             </a>
             <div class="header-quote">
                 <span class="quote-text">Кованое искусство - где металл обретает душу</span>
@@ -26,27 +32,30 @@
             <h2 class="categories-title">Меню</h2>
             
             <nav class="categories-nav main-nav">
-                <a href="{{ url_for('home') }}" class="category-link {% if request.endpoint == 'home' %}active{% endif %}">
+                <a href="{{ url_for('main.home') }}" class="category-link {% if request.endpoint == 'main.home' %}active{% endif %}">
                     <span>Главная</span>
                 </a>
-                <a href="{{ url_for('products') }}" class="category-link {% if request.endpoint == 'products' %}active{% endif %}">
+                <a href="{{ url_for('main.products') }}" class="category-link {% if request.endpoint == 'main.products' %}active{% endif %}">
                     <span>Все продукты</span>
+                </a>
+                <a href="{{ url_for('main.articles') }}" class="category-link {% if request.endpoint == 'main.articles' %}active{% endif %}">
+                    <span>Статьи</span>
                 </a>
             </nav>
 
             <h3 class="categories-subtitle">Категории</h3>
             
             <nav class="categories-nav">
-                <a href="{{ url_for('products', category='Ножи') }}" class="category-link {% if category == 'Ножи' %}active{% endif %}">
+                <a href="{{ url_for('main.products', category='Ножи') }}" class="category-link {% if category == 'Ножи' %}active{% endif %}">
                     Ножи
                 </a>
-                <a href="{{ url_for('products', category='Топоры') }}" class="category-link {% if category == 'Топоры' %}active{% endif %}">
+                <a href="{{ url_for('main.products', category='Топоры') }}" class="category-link {% if category == 'Топоры' %}active{% endif %}">
                     Топоры
                 </a>
-                <a href="{{ url_for('products', category='Сувениры') }}" class="category-link {% if category == 'Сувениры' %}active{% endif %}">
+                <a href="{{ url_for('main.products', category='Сувениры') }}" class="category-link {% if category == 'Сувениры' %}active{% endif %}">
                     Сувениры
                 </a>
-                <a href="{{ url_for('products', category='Ковка в интерьер') }}" class="category-link {% if category == 'Ковка в интерьер' %}active{% endif %}">
+                <a href="{{ url_for('main.products', category='Ковка в интерьер') }}" class="category-link {% if category == 'Ковка в интерьер' %}active{% endif %}">
                     Ковка в интерьер
                 </a>
             </nav>
@@ -54,10 +63,10 @@
             <h3 class="categories-subtitle">Информация</h3>
             
             <nav class="categories-nav info-nav">
-                <a href="{{ url_for('about') }}" class="category-link {% if request.endpoint == 'about' %}active{% endif %}">
+                <a href="{{ url_for('main.about') }}" class="category-link {% if request.endpoint == 'main.about' %}active{% endif %}">
                     Обо мне
                 </a>
-                <a href="{{ url_for('contacts') }}" class="category-link {% if request.endpoint == 'contacts' %}active{% endif %}">
+                <a href="{{ url_for('main.contacts') }}" class="category-link {% if request.endpoint == 'main.contacts' %}active{% endif %}">
                     Контакты
                 </a>
             </nav>
@@ -76,12 +85,12 @@
                 <h3>Контакты</h3>
                 <p>Телефон: +375 33 350 7020</p>
                 <p>Email: info@schnaps-metall.by</p>
-                <p>Адрес: г. Минск, ул. Кузнечная, 1</p>
+                <p>Адрес: г. Гродно, Беларусь</p>
             </div>
             <div class="footer-section">
                 <h3>Социальные сети</h3>
                 <div class="social-icons">
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/jury_blacksmith" class="social-icon"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
                 </div>

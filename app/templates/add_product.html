@@ -1,51 +1,109 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить продукт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon_io/site.webmanifest">
+    <style>
+        body {
+            background: url('/static/images/background.jpg') center/cover fixed;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Play', sans-serif;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="breadcrumb">
+            <a href="{{ url_for('main.admin') }}">Админ-панель</a> / Добавить продукт
+        </div>
 
-{% block title %}
-    Добавить новый продукт
-{% endblock %}
+        <h2>Добавить продукт</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Название продукта:</label>
+                <input type="text" 
+                       id="name" 
+                       name="name" 
+                       class="form-control" 
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Описание продукта:</label>
+                <textarea id="description" 
+                          name="description" 
+                          class="form-control" 
+                          rows="5" 
+                          required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="price">Цена:</label>
+                <input type="number" 
+                       id="price" 
+                       name="price" 
+                       class="form-control" 
+                       step="0.01" 
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="quantity">Количество на складе:</label>
+                <input type="number" 
+                       id="quantity" 
+                       name="quantity" 
+                       class="form-control" 
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="in_stock">Наличие:</label>
+                <select id="in_stock" name="in_stock" class="form-control" required>
+                    <option value="В наличии">В наличии</option>
+                    <option value="Под заказ">Под заказ</option>
+                    <option value="Нет в наличии">Нет в наличии</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                <select id="category" name="category" class="form-control" required>
+                    <option value="Ножи">Ножи</option>
+                    <option value="Топоры">Топоры</option>
+                    <option value="Сувениры">Сувениры</option>
+                    <option value="Ковка в интерьер">Ковка в интерьер</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="images">Изображения продукта:</label>
+                <input type="file" 
+                       id="images" 
+                       name="images" 
+                       class="form-control" 
+                       multiple 
+                       accept="image/*"
+                       required>
+                <small style="color: #888; margin-top: 5px; display: block;">Можно выбрать несколько изображений</small>
+            </div>
+            
+            <div class="button-container">
+                <a href="{{ url_for('main.admin') }}" class="back-btn">Назад</a>
+                <button type="submit" class="submit-btn"  onclick="updateContent()">Добавить продукт</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
 
-{% block breadcrumb %}
-<a href="{{ url_for('home') }}">Главная</a> / <a href="{{ url_for('products') }}">Продукты</a> / Добавить новый продукт
-{% endblock %}
-
-{% block content %}
-<div class="add-product-container">
-    <h2>Добавить новый продукт</h2>
-    <hr style="border: 1px solid #fff; margin: 10px 0;">
-    <form method="POST" id="addProductForm">
-        <div class="form-group">
-            <label for="name">Название продукта:</label>
-            <input type="text" id="name" name="name" placeholder="Введите название продукта" required>
-        </div>
-        <div class="form-group">
-            <label for="description">Описание:</label>
-            <textarea id="description" name="description" placeholder="Введите описание продукта" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="price">Цена:</label>
-            <input type="number" id="price" name="price" placeholder="Введите цену" min="0" required>
-        </div>
-        <div class="form-group">
-            <label for="quantity">Количество на складе (только для админа):</label>
-            <input type="number" id="quantity" name="quantity" placeholder="Введите количество" min="0" required>
-        </div>
-        <div class="form-group">
-            <label for="in_stock">Наличие:</label>
-            <select id="in_stock" name="in_stock" required>
-                <option value="В наличии">В наличии</option>
-                <option value="Под заказ">Под заказ</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="category">Категория:</label>
-            <select id="category" name="category" required>
-                <option value="Ножи">Ножи</option>
-                <option value="Топоры">Топоры</option>
-                <option value="Сувениры">Сувениры</option>
-                <option value="Ковка в интерьер">Ковка в интерьер</option>
-            </select>
-        </div>
-        <button type="submit" class="submit-btn">Добавить продукт</button>
-    </form>
-</div>
-{% endblock %}

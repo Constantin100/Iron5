@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать статью</title>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon_io/site.webmanifest">
+    <style>
+        body {
+            background: url('/static/images/background.jpg') center/cover fixed;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Play', sans-serif;
+            color: #fff;
+        }
+
+        .admin-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+            border: 1px solid rgba(253, 225, 64, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .breadcrumb a {
+            color: #fde140;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #ff8c00;
+        }
+
+        h2 {
+            color: #fde140;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #fde140;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(253, 225, 64, 0.3);
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .current-image {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .current-image img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 5px;
+            border: 1px solid rgba(253, 225, 64, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .back-btn, .submit-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn {
+            background: #333;
+            color: #fde140;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #fde140, #ff8c00);
+            color: #000;
+        }
+
+        .back-btn:hover {
+            background: #444;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #ff8c00, #fde140);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="breadcrumb">
+            <a href="{{ url_for('main.admin') }}">Админ-панель</a> / Редактировать статью
+        </div>
+
+        <h2>Редактировать статью</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Заголовок статьи:</label>
+                <input type="text" 
+                       id="title" 
+                       name="title" 
+                       class="form-control" 
+                       value="{{ article.title }}"
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="content">Содержание статьи:</label>
+                <textarea id="content" 
+                          name="content" 
+                          class="form-control" 
+                          rows="10" 
+                          required>{{ article.content }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                {% if article.image %}
+                <div class="current-image">
+                    <img src="{{ url_for('static', filename='uploads/' + article.image) }}" alt="Current image">
+                    <p>Текущее изображение</p>
+                </div>
+                {% endif %}
+                
+                <label for="image">Изменить изображение:</label>
+                <input type="file" 
+                       id="image" 
+                       name="image" 
+                       class="form-control" 
+                       accept="image/*">
+                <small style="color: #999;">Выберите новое изображение или оставьте пустым, чтобы сохранить текущее</small>
+            </div>
+            
+            <div class="button-container">
+                <a href="{{ url_for('main.admin') }}" class="back-btn">Назад</a>
+                <button type="submit" class="submit-btn">Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить статью</title>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon_io/site.webmanifest">
+    <style>
+         body {
+            background: url('/static/images/background.jpg') center/cover fixed;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Play', sans-serif;
+            color: #fff;
+        }
+        .admin-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+            border: 1px solid rgba(253, 225, 64, 0.2);
+            border-radius: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #fde140;
+            margin-bottom: 5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid rgba(253, 225, 64, 0.3);
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #fde140;
+        }
+        
+        textarea.form-control {
+            resize: vertical;
+            min-height: 200px;
+        }
+        
+        .form-text {
+            display: block;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .back-btn, .submit-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .back-btn {
+            background: #333;
+            color: #fde140;
+            flex: 1;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #fde140, #ff8c00);
+            color: #000;
+            flex: 2;
+        }
+        
+        .back-btn:hover {
+            background: #444;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #ff8c00, #fde140);
+        }
+        </style>
+</head>
+<body>
+<div class="admin-container">
+    <h2>Добавить новую статью</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Заголовок статьи:</label>
+            <input type="text" 
+                   id="title" 
+                   name="title" 
+                   class="form-control" 
+                   required>
+        </div>
+        
+        <div class="form-group">
+            <label for="content">Содержание статьи:</label>
+            <textarea id="content" 
+                      name="content" 
+                      class="form-control" 
+                      rows="10" 
+                      required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="image">Изображение статьи:</label>
+            <input type="file" 
+                   id="image" 
+                   name="image" 
+                   class="form-control" 
+                   accept="image/*">
+            <small class="form-text">Выберите изображение (PNG, JPG)</small>
+        </div>
+        
+        <div class="button-container">
+            <a href="{{ url_for('main.admin') }}" class="back-btn">Назад</a>
+            <button type="submit" class="submit-btn">Добавить статью</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="article-container">
+    <h1 class="article-title">{{ article.title }}</h1>
+    
+   
+    
+    {% if article.image %}
+    <div class="article-images">
+        <div class="main-image">
+            <img src="{{ url_for('static', filename='uploads/' + article.image) }}" alt="{{ article.title }}">
+        </div>
+        {% if article.additional_images %}
+        <div class="additional-images">
+            {% for image in article.additional_images %}
+            <div class="image-item">
+                <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="{{ article.title }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="article-content">
+        {{ article.content | safe }}
+    </div>
+    
+    <div class="article-footer">
+        <span class="article-date-footer">Опубликовано: {{ article.created_at.strftime('%d.%m.%Y') }}</span>
+        <a href="{{ url_for('main.articles') }}" class="back-link">Вернуться к списку статей</a>
+    </div>
+</div>
+
+<style>
+.article-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 40px;
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+    border: 1px solid rgba(253, 225, 64, 0.2);
+    border-radius: 10px;
+    color: #fff;
+}
+
+.article-title {
+    font-size: 2.5em;
+    color: #fde140;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.3;
+}
+
+.article-meta {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    color: #888;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.article-images {
+    margin: 0 -40px 30px -40px;
+}
+
+.main-image {
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(253, 225, 64, 0.2);
+}
+
+.main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.additional-images {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(253, 225, 64, 0.3) rgba(0, 0, 0, 0.2);
+}
+
+.additional-images::-webkit-scrollbar {
+    height: 6px;
+}
+
+.additional-images::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.additional-images::-webkit-scrollbar-thumb {
+    background: rgba(253, 225, 64, 0.3);
+    border-radius: 3px;
+}
+
+.image-item {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-5px);
+}
+
+.image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.article-content {
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    color: #e0e0e0;
+}
+
+.article-content p {
+    margin-bottom: 20px;
+}
+
+.article-content h2 {
+    color: #fde140;
+    margin: 40px 0 20px;
+    font-size: 1.8em;
+}
+
+.article-content h3 {
+    color: #fde140;
+    margin: 30px 0 15px;
+    font-size: 1.5em;
+}
+
+.article-content ul, 
+.article-content ol {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.back-link {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #fde140, #ff8c00);
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ff8c00, #fde140);
+}
+
+.article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(253, 225, 64, 0.2);
+}
+
+.article-date-footer {
+    color: #888;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .article-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .article-images {
+        margin: 0 -20px 20px -20px;
+    }
+
+    .main-image {
+        height: 250px;
+    }
+
+    .additional-images {
+        padding: 10px;
+    }
+
+    .image-item {
+        width: 150px;
+        height: 100px;
+    }
+
+    .article-footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .back-link {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+
+<script>
+// Добавляем функционал для просмотра изображений
+document.querySelectorAll('.image-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const imgSrc = this.querySelector('img').src;
+        const mainImage = document.querySelector('.main-image img');
+        mainImage.src = imgSrc;
+        
+        // Плавный скролл к основному изображению
+        mainImage.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+</script>
+{% endblock %} 

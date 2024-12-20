@@ -89,87 +89,71 @@ header::after {
 }
 
 .logo-link {
-    margin: 0;
     text-decoration: none;
-    padding: 5px 0 5px 20px;
+    padding: 15px 0 15px 20px;
     display: flex;
-    align-items: center;
-    height: 80px;
+    align-items: flex-end;
     position: relative;
     transition: all 0.3s ease;
 }
 
-.logo-image {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
-    filter: 
-        drop-shadow(0 0 20px rgba(255, 165, 0, 0.2));
-    transition: all 0.5s ease;
-    transform-origin: center;
+.logo-text {
+    color: #fde140;
+    font-size: 2.5em;
+    line-height: 0.8;
+    text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(255, 215, 0, 0.3);
+    transition: all 0.4s ease;
+    white-space: nowrap;
+    margin-left: -10px;
+    display: flex;
+    align-items: baseline;
 }
 
-.logo-link:hover .logo-image {
-    filter: 
-        drop-shadow(0 0 30px rgba(255, 165, 0, 0.5))
-        brightness(1.2); /* Делаем немного ярче при наведении */
+.logo-text::first-letter {
+    font-size: 1.8em;
+    margin-right: 5px;
+    line-height: 0.8;
+}
+
+.logo-link:hover .logo-text {
+    color: #fff7cc;
     transform: scale(1.1);
+    text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(255, 215, 0, 0.8),
+        0 0 50px rgba(255, 215, 0, 0.4);
     animation: logoGlow 2s infinite;
 }
 
 @keyframes logoGlow {
-    0% {
-        filter: 
-            drop-shadow(0 0 30px rgba(255, 165, 0, 0.4))
-            brightness(1.1);
+    0%, 100% {
+        text-shadow: 
+            2px 2px 4px rgba(0, 0, 0, 0.7),
+            0 0 30px rgba(255, 215, 0, 0.8),
+            0 0 50px rgba(255, 215, 0, 0.4);
     }
     50% {
-        filter: 
-            drop-shadow(0 0 40px rgba(255, 165, 0, 0.6))
-            brightness(1.3);
-    }
-    100% {
-        filter: 
-            drop-shadow(0 0 30px rgba(255, 165, 0, 0.4))
-            brightness(1.1);
+        text-shadow: 
+            2px 2px 4px rgba(0, 0, 0, 0.7),
+            0 0 40px rgba(255, 215, 0, 1),
+            0 0 70px rgba(255, 215, 0, 0.6);
     }
 }
 
-.logo-link::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120%;
-    height: 120%;
-    background: radial-gradient(circle, 
-        rgba(255, 215, 0, 0.1) 0%,
-        transparent 70%
-    );
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    transition: all 0.5s ease;
-    z-index: -1;
-}
-
-.logo-link:hover::after {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    animation: sparkle 2s infinite;
-}
-
-@keyframes sparkle {
-    0% {
-        transform: translate(-50%, -50%) scale(0.8);
-        opacity: 0.3;
+/* Медиа-запрос для адаптивности */
+@media (max-width: 768px) {
+    .logo-text {
+        font-size: 2em;
     }
-    50% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 0.5;
+    
+    .logo-text::first-letter {
+        font-size: 1.8em;
     }
-    100% {
-        transform: translate(-50%, -50%) scale(0.8);
-        opacity: 0.3;
+    
+    .logo-link {
+        padding-left: 10px;
     }
 }
 
@@ -455,7 +439,6 @@ main {
 
 .section-title {
     color: #fde140;
-    border-bottom: 2px solid #ff4500;
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
@@ -634,7 +617,7 @@ footer::before {
     animation: fireMove 20s infinite linear;
     z-index: 1;
     mix-blend-mode: soft-light;
-    transform: scaleY(-1); /* Переворачиваем текстуру для разнообразия */
+    transform: scaleY(-1); /* Переворачиваем текстуру для ранообразия */
 }
 
 footer::after {
@@ -703,7 +686,7 @@ footer * {
     transform: scale(1.2);
 }
 
-/* Эффектное приветствие */
+/* ��ффектн��е приветствие */
 .welcome-section {
     position: relative;
     padding: 80px 40px;
@@ -942,7 +925,7 @@ footer * {
     font-size: 1.1em;
 }
 
-/* Стили для преимуществ */
+/* Стили для примуществ */
 .features {
     padding: 60px 0;
 }
@@ -998,7 +981,7 @@ footer * {
     }
 }
 
-/* Улучшае�� риветствнную секцию */
+/* Улучшае риветствнную секцию */
 .welcome-section {
     padding: 80px 40px;
     background: linear-gradient(145deg, rgba(25, 25, 25, 0.85), rgba(10, 10, 10, 0.9));
@@ -1540,6 +1523,7 @@ body::before {
     border-radius: 10px;
     padding: 20px;
     min-height: 500px;
+    max-width: 70%;
     backdrop-filter: blur(5px);
     box-shadow: 
         0 4px 20px rgba(0, 0, 0, 0.2),

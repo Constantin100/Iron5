@@ -1,106 +1,301 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Продукты{% endblock %}
-
-{% block breadcrumb %}
-<a href="{{ url_for('home') }}">Главная</a> / Продукты
-{% endblock %}
+{% block title %}Наши продукты{% endblock %}
 
 {% block content %}
-<h2>Наши продукты</h2>
-<p>Здесь вы можете увидеть список наших продуктов.</p>
+<h2 class="section-title">Наши продукты</h2>
 
-<!-- Список продуктов -->
-<div id="product-list" class="product-list">
+{% if products %}
+<div class="product-grid">
     {% for product in products %}
-        <div class="product-item">
-            {% if product.images %}
-                <img src="{{ url_for('get_image', image_id=product.images[0].id) }}" alt="{{ product.name }}" class="product-image" onclick="openModal(this.src)">
-            {% endif %}
+    <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-link">
+        <div class="product-card">
+            <div class="product-image">
+                {% if product.images %}
+                    <img src="{{ url_for('static', filename='uploads/' + product.images[0].filename) }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="no-image">Нет фото</div>
+                {% endif %}
+            </div>
             <div class="product-info">
-                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
-                <p>{{ product.description }}</p>
-                <p>Цена: {{ product.price }} руб.</p>
-                <p>Наличие: {{ product.in_stock }}</p>
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-description">{{ product.description[:100] }}{% if product.description|length > 100 %}...{% endif %}</p>
+                <div class="product-details">
+                    <span class="product-price">{{ product.price }} руб.</span>
+                    <span class="product-status {% if product.in_stock == 'В наличии' %}in-stock{% else %}out-of-stock{% endif %}">
+                        {{ product.in_stock }}
+                    </span>
+                </div>
             </div>
         </div>
+    </a>
     {% endfor %}
 </div>
-<p id="no-products-message" style="display: none;">Продуктов из данной категории нет.</p>
-
-<!-- Модальное окно для увеличенного изображения -->
-<div id="imageModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImage">
+{% else %}
+<div class="no-products">
+    <div class="no-products-icon">!</div>
+    <h3>Продуктов в данной категории нет</h3>
+    <p>Пожалуйста, выберите другую категорию или загляните позже</p>
 </div>
+{% endif %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+<style>
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
 
-<script>
-    // Получаем категорию из URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
-    console.log('Категория:', category);
-    if (category) {
-        loadProducts(category);
-    } else {
-        loadProducts();
+.product-card {
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+    border: 1px solid rgba(253, 225, 64, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 600px; /* Фиксированная высота */
+}
+
+.product-image {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(253, 225, 64, 0.2);
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: #666;
+    font-size: 1em;
+}
+
+.product-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Заполняет доступное пространство */
+}
+
+.product-title {
+    color: #fde140;
+    font-size: 1.4em;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.product-description {
+    color: #ccc;
+    font-size: 0.9em;
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+    flex-grow: 1; /* Оставляем место для других элементов */
+}
+
+.product-details {
+    display: flex;
+    justify-content: space-between; /* Размещение элементов по краям */
+    margin-top: auto;
+}
+
+.product-price {
+    color: #fde140;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: left; /* Выравнивание цены слева */
+}
+
+.product-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-align: right; /* Выравнивание статуса справа */
+}
+
+.product-status.in-stock {
+    background: rgba(253, 225, 64, 0.1);
+    color: #fde140;
+    border: 1px solid rgba(253, 225, 64, 0.3);
+}
+
+.product-status.out-of-stock {
+    background: rgba(255, 140, 0, 0.1);
+    color: #ff8c00;
+    border: 1px solid rgba(255, 140, 0, 0.3);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.product-status.out-of-stock:hover {
+    background: rgba(255, 140, 0, 0.2);
+    border-color: rgba(255, 140, 0, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
     }
 
-    function loadProducts(category = '') {
-        console.log('Загрузка продуктов для категории:', category);
-        fetch(`/api/products?category=${category}`)
-            .then(response => {
-                console.log('Ответ от API:', response);
-                return response.json();
-            })
-            .then(data => {
-                console.log('Полученные данные:', data);
-                const productList = document.getElementById('product-list');
-                const noProductsMessage = document.getElementById('no-products-message');
-                productList.innerHTML = '';
-
-                if (data.products && data.products.length > 0) {
-                    data.products.forEach(product => {
-                        console.log('Обработка продукта:', product);
-                        const div = document.createElement('div');
-                        div.className = 'product-item';
-                        const productUrl = `/product/${product.id}`;
-                        console.log('URL продукта:', productUrl);
-                        div.innerHTML = `
-                            ${product.images.length > 0 ? `<img src="${product.images[0]}" alt="${product.name}" class="product-image" onclick="openModal('${product.images[0]}')">` : ''}
-                            <div class="product-info">
-                                <h3><a href="${productUrl}">${product.name}</a></h3>
-                                <p>${product.description}</p>
-                                <p>Цена: ${product.price} руб.</p>
-                                <p>Наличие: ${product.in_stock}</p>
-                            </div>
-                        `;
-                        productList.appendChild(div);
-                    });
-                    noProductsMessage.style.display = 'none';
-                } else {
-                    noProductsMessage.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка загрузки продуктов:', error);
-                const noProductsMessage = document.getElementById('no-products-message');
-                noProductsMessage.style.display = 'block';
-            });
+    .product-image {
+        height: 250px;
     }
 
-    // Функции для модального окна
-    function openModal(imgSrc) {
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        modal.style.display = "block";
-        modalImg.src = imgSrc;
+    .no-products {
+        padding: 40px 20px;
+        margin: 0 15px;
     }
+    
+    .no-products-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+    }
+    
+    .no-products h3 {
+        font-size: 1.2em;
+    }
+}
 
-    function closeModal() {
-        const modal = document.getElementById('imageModal');
-        modal.style.display = "none";
+.no-products {
+    text-align: center;
+    padding: 60px 30px;
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+    border: 1px solid rgba(253, 225, 64, 0.2);
+    border-radius: 10px;
+    color: #ccc;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.no-products::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(253, 225, 64, 0.5),
+        transparent
+    );
+}
+
+.no-products::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(253, 225, 64, 0.5),
+        transparent
+    );
+}
+
+.no-products-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    background: rgba(253, 225, 64, 0.1);
+    border: 2px solid rgba(253, 225, 64, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #fde140;
+    font-weight: bold;
+    animation: pulseGlow 2s infinite;
+}
+
+.no-products h3 {
+    color: #fde140;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.no-products p {
+    color: #999;
+    font-size: 1em;
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-</script>
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(253, 225, 64, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(253, 225, 64, 0.5);
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(253, 225, 64, 0.3);
+        transform: scale(1);
+    }
+}
+
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-card {
+    cursor: pointer;
+}
+
+.product-card a {
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .product-image::after {
+        font-size: 0.9em;
+        padding: 3px 6px;
+    }
+}
+</style>
 {% endblock %}

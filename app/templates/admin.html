@@ -4,36 +4,403 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon_io/site.webmanifest">
+    <style>
+        body {
+            background: url('/static/images/background.jpg') center/cover fixed;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Play', sans-serif;
+            color: #fff;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+            border: 1px solid rgba(253, 225, 64, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(253, 225, 64, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(253, 225, 64, 0.2);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            color: #fde140;
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .product-category {
+            padding: 4px 8px;
+            background: rgba(253, 225, 64, 0.1);
+            border-radius: 4px;
+            color: #fde140;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #fde140;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .edit-btn, .delete-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, #fde140, #ff8c00);
+            color: #000;
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: #fff;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .stock-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .in-stock {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .out-of-stock {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .add-product-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #fde140, #ff8c00);
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ff8c00, #fde140);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        /* Стили для навигации */
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+            border: 1px solid rgba(253, 225, 64, 0.2);
+            border-radius: 5px;
+            color: #fde140;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            border-color: rgba(253, 225, 64, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #fde140, #ff8c00);
+            color: #000;
+        }
+
+        .nav-btn.logout {
+            margin-left: auto;
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            border: none;
+            color: #fff;
+        }
+
+        .nav-btn.logout:hover {
+            background: linear-gradient(45deg, #cc0000, #ff4444);
+        }
+
+        /* Стили для статей */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .article-card {
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+            border: 1px solid rgba(253, 225, 64, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(253, 225, 64, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .article-info {
+            padding: 15px;
+        }
+
+        .article-title {
+            color: #fde140;
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+        }
+
+        .article-date {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(253, 225, 64, 0.2);
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .no-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(145deg, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, 0.95));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .article-preview {
+            color: #888;
+            font-size: 0.9em;
+            margin: 10px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
 </head>
 <body>
     <div class="admin-container">
         <h2>Админ-панель</h2>
 
-        <div style="display: flex; justify-content: space-between;">
-            <a href="{{ url_for('add_product') }}" class="button">Добавить продукт</a>
-            <a href="{{ url_for('logout') }}" class="button">Выйти</a>
+        <div class="admin-nav">
+            <a href="#products" class="nav-btn active" onclick="showSection('products')">Продукты</a>
+            <a href="#articles" class="nav-btn" onclick="showSection('articles')">Статьи</a>
+            <a href="{{ url_for('main.logout') }}" class="nav-btn logout">Выйти</a>
         </div>
-        <hr style="border: 1px solid #fff; margin: 10px 0;">
         
-        <h3>Список продуктов:</h3>
-        <ul>
-            {% for product in products %}
-                <li>
-                    <span>{{ product.name }} ({{ product.category }}) - {% if product.active %}Активен{% else %}Неактивен{% endif %} - {{ product.in_stock }}</span>
-                    <div>
-                        <a href="{{ url_for('edit_product', product_id=product.id) }}" class="edit_button_admin_menu">Редактировать</a>
-                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="button">Удалить</button>
-                        </form>
+        <div id="products-section">
+            <div class="section-header">
+                <h3>Продукты</h3>
+                <a href="{{ url_for('main.add_product') }}" class="add-product-btn">Добавить продукт</a>
+            </div>
+
+            {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image">
+                        {% if product.images %}
+                            <img src="{{ url_for('static', filename='uploads/' + product.images[0].filename) }}" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="no-image">Нет фото</div>
+                        {% endif %}
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
+                    <div class="product-info">
+                        <h4 class="product-title">{{ product.name }}</h4>
+                        <div class="product-meta">
+                            <span class="product-category">{{ product.category }}</span>
+                            <span class="product-price">{{ product.price }} руб.</span>
+                        </div>
+                        <div class="product-meta">
+                            <span class="stock-status {% if product.in_stock == 'В наличии' %}in-stock{% else %}out-of-stock{% endif %}">
+                                {{ product.in_stock }}
+                            </span>
+                            <span>Кол-во: {{ product.quantity }}</span>
+                        </div>
+                        <div class="product-actions">
+                            <a href="{{ url_for('main.edit_product', product_id=product.id) }}" class="edit-btn">Редактировать</a>
+                            <form action="{{ url_for('main.delete_product', product_id=product.id) }}" method="POST" style="flex: 1;">
+                                <button type="submit" class="delete-btn" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-products">
+                <p>Продуктов пока нет</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div id="articles-section" style="display: none;">
+            <div class="section-header">
+                <h3>Статьи</h3>
+                <a href="{{ url_for('main.add_article') }}" class="add-product-btn">Добавить статью</a>
+            </div>
+
+            {% if articles %}
+            <div class="articles-grid">
+                {% for article in articles %}
+                <div class="article-card">
+                    <div class="article-image">
+                        {% if article.image %}
+                            <img src="{{ url_for('static', filename='uploads/' + article.image) }}" alt="{{ article.title }}">
+                        {% else %}
+                            <div class="no-image">Нет изображения</div>
+                        {% endif %}
+                    </div>
+                    <div class="article-info">
+                        <h4 class="article-title">{{ article.title }}</h4>
+                        <span class="article-date">{{ article.created_at.strftime('%d.%m.%Y') }}</span>
+                        <p class="article-preview">{{ article.content[:150] }}{% if article.content|length > 150 %}...{% endif %}</p>
+                        <div class="product-actions">
+                            <a href="{{ url_for('main.edit_article', article_id=article.id) }}" class="edit-btn">Редактировать</a>
+                            <form action="{{ url_for('main.delete_article', article_id=article.id) }}" method="POST" style="flex: 1;">
+                                <button type="submit" class="delete-btn" onclick="return confirm('Вы уверены, что хотите удалить эту статью?')">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-products">
+                <p>Статей пока нет</p>
+            </div>
+            {% endif %}
+        </div>
     </div>
+
+    <script>
+        function showSection(section) {
+            // Скрываем все секции
+            document.getElementById('products-section').style.display = 'none';
+            document.getElementById('articles-section').style.display = 'none';
+            
+            // Показываем выбранную секцию
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[href="#${section}"]`).classList.add('active');
+        }
+    </script>
 </body>
 </html>
